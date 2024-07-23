@@ -51,4 +51,23 @@ export class BooksService {
 
     if (!result) throw new BadRequestException('Something went wrong');
   }
+
+  async updateBook(
+    id: mongoose.Schema.Types.ObjectId,
+    dataToUpdate: Partial<Book>,
+  ): Promise<Book> {
+    const book = await this.getOneById(id);
+
+    if (!book) throw new NotFoundException(`Book with ID ${id} not found`);
+
+    const updatedBook = await this.bookModel.findByIdAndUpdate(
+      id,
+      {
+        ...dataToUpdate,
+      },
+      { new: true },
+    );
+
+    return updatedBook;
+  }
 }

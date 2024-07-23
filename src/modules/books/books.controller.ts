@@ -12,6 +12,7 @@ import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './schemas/book.schema';
 import mongoose from 'mongoose';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -47,5 +48,15 @@ export class BooksController {
   @Patch(':id/completed')
   async toggleCompleted(@Param('id') id: mongoose.Schema.Types.ObjectId) {
     await this.booksService.toggleCompleted(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Body(new ValidationPipe()) updateBookDto: UpdateBookDto,
+    @Param('id') id: mongoose.Schema.Types.ObjectId,
+  ) {
+    const updatedBook = await this.booksService.updateBook(id, updateBookDto);
+
+    return updatedBook;
   }
 }

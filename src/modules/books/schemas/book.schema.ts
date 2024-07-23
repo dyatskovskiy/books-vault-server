@@ -22,6 +22,9 @@ export class Book {
 
   @Prop({ default: '' })
   imageUrl: string;
+
+  @Prop({ default: '' })
+  owner: string;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
