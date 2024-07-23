@@ -13,7 +13,7 @@ export const DatabaseProviders = [
         console.log('Connection failed, error:', error);
       });
 
-      return await mongoose.connect(process.env.MONGO_URL);
+      return await mongoose.connect(`${process.env.MONGO_URL}`);
     },
   },
 ];

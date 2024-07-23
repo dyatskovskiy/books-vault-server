@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBookDto } from './dto/create-book.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Book } from './schemas/create-book.schema';
 import { Model } from 'mongoose';
+import { CreateBookDto } from './dto/create-book.dto';
+import { Book } from './schemas/create-book.schema';
 
 @Injectable()
 export class BooksService {
@@ -11,9 +11,8 @@ export class BooksService {
   ) {}
 
   async create(createBookDto: CreateBookDto): Promise<Book> {
-    const createdBook = new this.bookModel(createBookDto);
+    const createdBook = this.bookModel.create(createBookDto);
 
-    console.log(createdBook);
     return createdBook;
   }
 }
