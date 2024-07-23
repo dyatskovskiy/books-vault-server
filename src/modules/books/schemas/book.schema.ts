@@ -11,8 +11,17 @@ export class Book {
   @Prop({ required: true })
   author: string;
 
+  @Prop({ required: true })
+  description: string;
+
   @Prop({ default: false })
   isCompleted: boolean;
+
+  @Prop({ default: [] })
+  tags: string[];
+
+  @Prop({ default: '' })
+  imageUrl: string;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

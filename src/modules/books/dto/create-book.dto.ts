@@ -1,4 +1,4 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateBookDto {
   @IsString({ message: 'Please provide the title' })
@@ -7,6 +7,6 @@ export class CreateBookDto {
   @IsString({ message: 'Please provide the author' })
   author: string;
 
-  @IsBoolean()
-  isCompleted: boolean;
+  @IsString({ message: 'Please provide the description' })
+  description: string;
 }
