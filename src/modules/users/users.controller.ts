@@ -1,4 +1,4 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -11,5 +11,12 @@ export class UsersController {
     const user = await this.userService.create(createUserDto);
 
     return user;
+  }
+
+  @Get()
+  async getAll() {
+    const users = await this.userService.getAll();
+
+    return { total: users.length, users };
   }
 }

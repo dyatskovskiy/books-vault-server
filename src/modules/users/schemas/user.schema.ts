@@ -3,7 +3,15 @@ import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema({ versionKey: false })
+@Schema({
+  versionKey: false,
+  toJSON: {
+    transform: (doc, ret) => {
+      delete ret.password;
+      return ret;
+    },
+  },
+})
 export class User {
   @Prop({ required: true })
   name: string;
@@ -11,7 +19,7 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true, minlength: 8, maxlength: 64 })
+  @Prop({ required: true, minlength: 8, maxlength: 64, select: false })
   password: string;
 }
 
