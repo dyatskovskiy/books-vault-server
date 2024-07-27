@@ -29,7 +29,10 @@ export class UsersService {
   }
 
   async findUserByEmail(email: string): Promise<User> | undefined {
-    const user = await this.userModel.findOne({ email: email }).exec();
+    const user = await this.userModel
+      .findOne({ email: email })
+      .select('+password')
+      .exec();
 
     return user;
   }
