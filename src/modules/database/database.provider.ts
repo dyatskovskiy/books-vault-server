@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ProviderConstants } from 'src/constants/providers.constants';
+import { ProviderConstants } from './constants';
 
 export const DatabaseProviders = [
   {
