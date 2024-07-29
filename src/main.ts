@@ -7,7 +7,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  await app.listen(3000, 'localhost');
+  await app.listen(+process.env.PORT, 'localhost');
 
   console.log(`Application running on: ${await app.getUrl()}`);
 }
