@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   ValidationPipe,
 } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './schemas/book.schema';
@@ -21,8 +23,10 @@ export class BooksController {
   @Post()
   async create(
     @Body(new ValidationPipe()) createBookDto: CreateBookDto,
+    @Request() req: ExpressRequest,
   ): Promise<Book> {
-    const book = await this.booksService.create(createBookDto);
+    const book = await this.booksService.create(createBookDto, req.user);
+
     return book;
   }
 

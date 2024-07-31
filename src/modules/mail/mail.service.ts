@@ -36,14 +36,12 @@ export class MailService {
     subject: string,
     htmlContent: string,
   ): Mail.Options {
-    const emailConfig: Mail.Options = {
+    return {
       from: process.env.MAILGUN_FROM,
       to,
       subject,
       html: htmlContent,
     };
-
-    return emailConfig;
   }
 
   async sendEmail(emailConfig: Mail.Options): Promise<SendEmailResult> {

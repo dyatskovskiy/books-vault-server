@@ -14,8 +14,11 @@ export class BooksService {
     @InjectModel(Book.name) private readonly bookModel: Model<Book>,
   ) {}
 
-  async create(createBookDto: CreateBookDto): Promise<Book> {
-    const createdBook = await this.bookModel.create(createBookDto);
+  async create(createBookDto: CreateBookDto, user): Promise<Book> {
+    const createdBook = await this.bookModel.create({
+      ...createBookDto,
+      owner: user.userId,
+    });
 
     return createdBook;
   }
