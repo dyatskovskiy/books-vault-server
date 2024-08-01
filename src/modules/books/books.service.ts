@@ -16,20 +16,16 @@ export class BooksService {
   ) {}
 
   async create(createBookDto: CreateBookDto, user): Promise<Book> {
-    try {
-      const createdBook = await this.bookModel.create({
-        owner: user.userId,
-        ...createBookDto,
-      });
+    const createdBook = await this.bookModel.create({
+      owner: user.userId,
+      ...createBookDto,
+    });
 
-      return createdBook;
-    } catch (error) {
-      console.log(error);
-    }
+    return createdBook;
   }
 
-  async getAll(): Promise<Book[]> {
-    const books = await this.bookModel.find().exec();
+  async getAll(user): Promise<Book[]> {
+    const books = await this.bookModel.find({ owner: user.userId }).exec();
 
     return books;
   }
@@ -48,16 +44,22 @@ export class BooksService {
     if (!result) throw new NotFoundException(`Book with ID ${id} not found`);
   }
 
-  async toggleCompleted(id: mongoose.Schema.Types.ObjectId): Promise<void> {
+  async toggleCompleted(id: mongoose.Schema.Types.ObjectId): Promise<Book> {
     const book = await this.getOneById(id);
 
     if (!book) throw new NotFoundException(`Book with ID ${id} not found`);
 
-    const result = await this.bookModel.findByIdAndUpdate(id, {
-      isCompleted: !book.isCompleted,
-    });
+    const result = await this.bookModel.findByIdAndUpdate(
+      id,
+      {
+        isCompleted: !book.isCompleted,
+      },
+      { new: true },
+    );
 
     if (!result) throw new BadRequestException('Something went wrong');
+
+    return result;
   }
 
   async updateBook(

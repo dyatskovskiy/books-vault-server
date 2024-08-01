@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -8,14 +9,17 @@ export type UserDocument = HydratedDocument<User>;
   toJSON: {
     transform: (doc, ret) => {
       delete ret.password;
+      delete ret.verificationToken;
       return ret;
     },
   },
 })
 export class User {
+  @ApiProperty()
   @Prop({ required: true })
   name: string;
 
+  @ApiProperty()
   @Prop({ required: true, unique: true })
   email: string;
 
@@ -25,6 +29,7 @@ export class User {
   @Prop({ default: '' })
   verificationToken: string;
 
+  @ApiProperty()
   @Prop({ default: false })
   verified: boolean;
 }
