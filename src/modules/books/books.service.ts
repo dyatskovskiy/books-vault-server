@@ -4,7 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './schemas/book.schema';
 
@@ -15,12 +16,16 @@ export class BooksService {
   ) {}
 
   async create(createBookDto: CreateBookDto, user): Promise<Book> {
-    const createdBook = await this.bookModel.create({
-      ...createBookDto,
-      owner: user.userId,
-    });
+    try {
+      const createdBook = await this.bookModel.create({
+        owner: user.userId,
+        ...createBookDto,
+      });
 
-    return createdBook;
+      return createdBook;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getAll(): Promise<Book[]> {

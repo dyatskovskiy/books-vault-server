@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { User } from '@src/modules/users/schemas/user.schema';
 
 export type BookDocument = HydratedDocument<Book>;
 
@@ -25,7 +24,7 @@ export class Book {
   imageUrl: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  owner: User;
+  owner: mongoose.Schema.Types.ObjectId;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

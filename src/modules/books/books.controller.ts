@@ -13,7 +13,7 @@ import { Request as ExpressRequest } from 'express';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './schemas/book.schema';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
@@ -25,7 +25,9 @@ export class BooksController {
     @Body(new ValidationPipe()) createBookDto: CreateBookDto,
     @Request() req: ExpressRequest,
   ): Promise<Book> {
-    const book = await this.booksService.create(createBookDto, req.user);
+    const user: Express.User = req.user;
+
+    const book = await this.booksService.create(createBookDto, user);
 
     return book;
   }
