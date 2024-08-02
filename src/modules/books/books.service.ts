@@ -38,6 +38,14 @@ export class BooksService {
     return result;
   }
 
+  async getCompleted(user): Promise<Book[]> {
+    const books = await this.bookModel
+      .find({ owner: user.userId, isCompleted: true })
+      .exec();
+
+    return books;
+  }
+
   async delete(id: mongoose.Schema.Types.ObjectId): Promise<void> {
     const result = await this.bookModel.findByIdAndDelete(id);
 

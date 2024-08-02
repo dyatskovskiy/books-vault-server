@@ -62,6 +62,15 @@ export class BooksController {
     return { total: books.length, books };
   }
 
+  @Get('completed')
+  @ApiOkResponse({ status: 200, type: [Book] })
+  @ApiForbiddenResponse({ description: 'Not authorized' })
+  async getCompleted(@Request() req: ExpressRequest): Promise<Book[]> {
+    const books = await this.booksService.getCompleted(req.user);
+
+    return books;
+  }
+
   @Get(':id')
   @ApiParam({ name: 'id' })
   @ApiResponse({ status: 200, type: Book })
@@ -85,20 +94,6 @@ export class BooksController {
     await this.booksService.delete(id);
   }
 
-  @HttpCode(HttpStatus.OK)
-  @Patch(':id/completed')
-  @ApiParam({ name: 'id' })
-  @ApiResponse({ status: 200, type: Book })
-  @ApiNotFoundResponse({ description: 'The book not found' })
-  @ApiForbiddenResponse({ description: 'Not authorized' })
-  async toggleCompleted(
-    @Param('id') id: mongoose.Schema.Types.ObjectId,
-  ): Promise<Book> {
-    const updatedBook = await this.booksService.toggleCompleted(id);
-
-    return updatedBook;
-  }
-
   @Patch(':id')
   @ApiParam({ name: 'id' })
   @ApiBody({ type: UpdateBookDto })
@@ -110,6 +105,20 @@ export class BooksController {
     @Param('id') id: mongoose.Schema.Types.ObjectId,
   ): Promise<Book> {
     const updatedBook = await this.booksService.updateBook(id, updateBookDto);
+
+    return updatedBook;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id/completed')
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 200, type: Book })
+  @ApiNotFoundResponse({ description: 'The book not found' })
+  @ApiForbiddenResponse({ description: 'Not authorized' })
+  async toggleCompleted(
+    @Param('id') id: mongoose.Schema.Types.ObjectId,
+  ): Promise<Book> {
+    const updatedBook = await this.booksService.toggleCompleted(id);
 
     return updatedBook;
   }
