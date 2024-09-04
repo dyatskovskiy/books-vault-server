@@ -64,7 +64,7 @@ export class UsersService {
       user.email,
       'Email verification',
       `<b>Please, click link below to verify your email</b>
-      <a href="http://localhost:${process.env.PORT}/verify/${user.verificationToken}">Verify</a>`,
+      <a href="https://books-vault-qjux.onrender.com/verify/${user.verificationToken}">Verify</a>`,
     );
 
     await this.mailService
